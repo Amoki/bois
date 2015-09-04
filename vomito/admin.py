@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+from django.contrib import admin
+from vomito.models import Rule, Next, Category, Player, Drink, Turn, Game
+
+
+class PlayerInline(admin.TabularInline):
+    model = Game.players.through
+
+
+class RuleInline(admin.TabularInline):
+    model = Next.rules.through
+
+
+class RuleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'next', 'category', 'mixte', 'nb_players')
+
+
+class NextAdmin(admin.ModelAdmin):
+    inlines = (RuleInline,)
+    exclude = ('rules',)
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'weight')
+
+
+class GameAdmin(admin.ModelAdmin):
+    list_display = ('category',)
+    exclude = ('players',)
+    inlines = (PlayerInline,)
+
+
+class PlayerAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name')
+
+
+class TurnAdmin(admin.ModelAdmin):
+    list_display = ('drink_set', 'rule')
+
+
+class DrinkAdmin(admin.ModelAdmin):
+    list_display = ('player', 'sip', 'bottoms_up')
+
+admin.site.register(Turn, TurnAdmin)
+admin.site.register(Drink, DrinkAdmin)
+admin.site.register(Player, PlayerAdmin)
+admin.site.register(Game, GameAdmin)
+admin.site.register(Rule, RuleAdmin)
+admin.site.register(Next, NextAdmin)
+admin.site.register(Category, CategoryAdmin)
