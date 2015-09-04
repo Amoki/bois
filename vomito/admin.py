@@ -12,7 +12,7 @@ class RuleInline(admin.TabularInline):
 
 
 class RuleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'next', 'category', 'mixte', 'nb_players')
+    list_display = ('description', 'next', 'category', 'mixte', 'nb_players', 'on_proc')
 
 
 class NextAdmin(admin.ModelAdmin):
@@ -21,7 +21,7 @@ class NextAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'weight')
+    list_display = ('name', 'weighting', 'difficulty')
 
 
 class GameAdmin(admin.ModelAdmin):
@@ -29,13 +29,20 @@ class GameAdmin(admin.ModelAdmin):
     exclude = ('players',)
     inlines = (PlayerInline,)
 
+    actions = ('next_turn',)
+
+    def next_turn(self, request, queryset):
+        for game in queryset:
+            game.next_turn()
+        return
+
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
 
 
 class TurnAdmin(admin.ModelAdmin):
-    list_display = ('drink_set', 'rule')
+    list_display = ('game', 'rule', 'string')
 
 
 class DrinkAdmin(admin.ModelAdmin):
