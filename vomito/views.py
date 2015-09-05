@@ -9,6 +9,7 @@ from vomito.models import Game, Player, Category
 from vomito.serializers import PlayerSerializer, TurnSerializer
 
 
+@api_view(['GET'])
 def home(request):
     categories = Category.objects.all()
 
@@ -17,7 +18,7 @@ def home(request):
 
 @api_view(['GET'])
 def players(request):
-    return JSONResponse(PlayerSerializer(Player.objects.all()).data)
+    return JSONResponse(PlayerSerializer(Player.objects.all(), many=True).data)
 
 
 @api_view(['POST'])
@@ -55,7 +56,8 @@ def game(request):
 
 @api_view(['POST'])
 def player(request):
-    check_params('first_name', 'last_name', 'sex')
+    print request.data
+    check_params(request, ('first_name', 'last_name', 'sex'))
     player = Player(
         first_name=request.data.get('first_name'),
         last_name=request.data.get('last_name'),
@@ -87,6 +89,6 @@ def next_turn(request):
 
 @api_view(['GET'])
 def follow(request):
-    check_params('game')
+    check_params(request, ('game',))
 
     return render(request, 'follow', {game: request.data.get('game')})

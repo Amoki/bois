@@ -38,7 +38,7 @@ class GameAdmin(admin.ModelAdmin):
 
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name')
+    list_display = ('first_name', 'last_name', 'sex')
 
 
 class TurnAdmin(admin.ModelAdmin):
