@@ -61,7 +61,6 @@ def game(request):
 
 @api_view(['POST'])
 def player(request):
-    print request.data
     check_params(request, ('first_name', 'last_name', 'sex'))
     player = Player(
         first_name=request.data.get('first_name'),

@@ -22,7 +22,7 @@ class TurnSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Turn
-        fields = ('string')
+        fields = ('string',)
 
 
 class CategorySerializer(serializers.ModelSerializer):
