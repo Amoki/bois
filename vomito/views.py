@@ -6,7 +6,7 @@ from utils.json_renderer import JSONResponse
 from utils.required_params import check_params
 
 from vomito.models import Game, Player, Category
-from vomito.serializers import PlayerSerializer, TurnSerializer
+from vomito.serializers import PlayerSerializer, TurnSerializer, CategorySerializer
 
 
 @api_view(['GET'])
@@ -21,18 +21,23 @@ def players(request):
     return JSONResponse(PlayerSerializer(Player.objects.all(), many=True).data)
 
 
+@api_view(['GET'])
+def categories(request):
+    return JSONResponse(CategorySerializer(Category.objects.all(), many=True).data)
+
+
 @api_view(['POST'])
 def post_game(request):
     check_params(request, ['category', 'players'])
 
-    players = Player.objects.find(pk__in=request.data.get('players'))
-    category = Player.objects.get(pk=request.data.get('category'))
+    players = Player.objects.filter(pk__in=request.data.get('players'))
+    category = Category.objects.get(pk=request.data.get('category'))
 
     male = False
     female = False
 
     for player in players:
-        if player.sex == Player.Male:
+        if player.sex == Player.MALE:
             male = True
         else:
             female = True
@@ -43,7 +48,7 @@ def post_game(request):
 
     request.session['game'] = game.pk
 
-    return redirect('game')
+    return redirect('/game')
 
 
 @api_view(['GET'])
@@ -51,7 +56,7 @@ def game(request):
     if not request.session.get('game', False):
         return redirect('home')
 
-    return render(request, 'game')
+    return render(request, 'game.html')
 
 
 @api_view(['POST'])
@@ -91,4 +96,4 @@ def next_turn(request):
 def follow(request):
     check_params(request, ('game',))
 
-    return render(request, 'follow', {game: request.data.get('game')})
+    return render(request, 'follow.html', {game: request.data.get('game')})

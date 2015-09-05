@@ -4,20 +4,25 @@
 <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 {% endblock pre_end_head %}
 {% block content %}
-<h1>coucou</h1>
+<p>
+    Categorie :
+    <select data-bind="options: availableCategories, optionsText: 'name', value: selectedCategory"></select>
+</p>
+
+
 <table>
     <thead><tr>
         <th>Joueurs</th><th></th>
     </tr></thead>
     <tbody data-bind="foreach: selectedPlayers">
         <tr>
-            <td><input type="text" data-bind="autoComplete: { selected: $root.selectedOption, options: $root.options }" /></td>
-            <td><a href="#" data-bind="click: $root.removePlayer">X</a></td>
+            <td><input type="text" data-bind="autoComplete: { selected: $root.selectedPlayerOption, options: $root.playerOptions }" /></td>
+            <td><a href="#" data-bind="click: $root.removePlayer"> X </a></td>
+            <td><a href="#" data-bind="click: $root.addPlayer"> + </a></td>
         </tr>
     </tbody>
 </table>
 
-<button data-bind="click: addPlayer">+</button>
 
 <div data-bind="visible: playerCreation() == true">
     <table>
@@ -37,5 +42,9 @@
 
 </div>
 <button data-bind="click: createPlayer">Créer un joueur</button>
+
+
+<button data-bind="click: createGame">C'est partie !</button>
+
 {% endblock content %}
 

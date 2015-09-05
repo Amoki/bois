@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from vomito.models import Player, Turn
+from vomito.models import Player, Turn, Category
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -23,3 +23,13 @@ class TurnSerializer(serializers.ModelSerializer):
     class Meta:
         model = Turn
         fields = ('string')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """
+    Serializing all the Category
+    """
+
+    class Meta:
+        model = Category
+        fields = ('pk', 'name')
