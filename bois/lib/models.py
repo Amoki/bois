@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import models, connection, transaction, IntegrityError
-from django.db.models.loading import get_model
+from django.apps import apps
 from django.core.exceptions import ValidationError
 
 
@@ -19,7 +19,7 @@ class ContextModel:
 			self.context_model: self
 		}
 
-		store = get_model(self.context_app, self.context_holder)
+		store = apps.get_model(self.context_app, self.context_holder)
 
 		try:
 			v = store.objects.get(**kwargs)
@@ -38,7 +38,7 @@ class ContextModel:
 			self.context_model: self
 		}
 
-		store = get_model(self.context_app, self.context_holder)
+		store = apps.get_model(self.context_app, self.context_holder)
 
 		try:
 			store.objects.get(**kwargs)
@@ -65,7 +65,7 @@ class ContextModel:
 		try:
 			sid = transaction.savepoint()
 
-			v = get_model(self.context_app, self.context_holder)(**kwargs)
+			v = apps.get_model(self.context_app, self.context_holder)(**kwargs)
 			v.save()
 
 			transaction.savepoint_commit(sid)
@@ -76,7 +76,7 @@ class ContextModel:
 			# stored_value.py. Django does not seems to reexecute the get_prep_value code, so we can't overwrite an existing value with a new FK.
 			# Therefore we need to delete it...
 			del kwargs['value']
-			v = get_model(self.context_app, self.context_holder).objects.get(**kwargs).delete()
+			v = apps.get_model(self.context_app, self.context_holder).objects.get(**kwargs).delete()
 			self.set_value(name, value)
 
 	def get_values(self):
@@ -84,7 +84,7 @@ class ContextModel:
 			self.context_model: self,
 		}
 
-		vs = get_model(self.context_app, self.context_holder).objects.filter(**kwargs)
+		vs = apps.get_model(self.context_app, self.context_holder).objects.filter(**kwargs)
 
 		return {v.name: v.value for v in vs}
 

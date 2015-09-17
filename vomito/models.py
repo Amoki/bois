@@ -16,7 +16,7 @@ class Rule(ScriptedModel):
     min_sip = models.PositiveIntegerField()
     max_sip = models.PositiveIntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
     """
@@ -34,7 +34,7 @@ class Category(models.Model):
     difficulty = models.PositiveIntegerField()
     weighting = models.PositiveIntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -43,7 +43,7 @@ class Game(models.Model, ContextModel):
     players = models.ManyToManyField('Player')
     mixte = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "Game %s" % (self.category)
 
     def select_rule(self):
@@ -103,7 +103,7 @@ class Player(models.Model):
     class Meta:
         unique_together = (("first_name", "last_name"),)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
 
 

@@ -69,7 +69,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 			link = escape(obj.object_repr)
 		else:
 			ct = obj.content_type
-			print ct.app_label, ct.model
+			print(ct.app_label, ct.model)
 			link = u'<a href="%s">%s</a>' % (
 				reverse('admin:%s_%s_change' % (ct.app_label, ct.model), args=[obj.object_id]),
 				escape(obj.object_repr),

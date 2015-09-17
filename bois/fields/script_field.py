@@ -52,8 +52,8 @@ class PythonCodeFormField(forms.CharField):
             try:
                 value = value.replace('\r', '')
                 compile(value, "<string>", 'exec')
-            except SyntaxError, arg:
-                raise forms.ValidationError(u'Syntax Error: %s' % unicode(arg))
+            except SyntaxError as arg:
+                raise forms.ValidationError('Syntax Error: %s' % str(arg))
             return value
 
 
