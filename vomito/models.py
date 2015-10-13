@@ -102,11 +102,18 @@ class Player(models.Model):
     def __str__(self):
         return self.first_name
 
+    def drink(self, turn, sip=0, bottoms_up=None):
+        Drink(turn=turn, player=self, sip=sip, bottoms_up=bottoms_up).save()
+
 
 class Turn(models.Model):
     rule = models.ForeignKey('Rule')
     game = models.ForeignKey('Game')
     string = models.TextField()
+
+    def end(self, string):
+        self.string = string
+        self.save()
 
 
 class Drink(models.Model):
