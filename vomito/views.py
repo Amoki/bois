@@ -28,6 +28,7 @@ def categories(request):
 
 @api_view(['POST'])
 def post_game(request):
+    print(request.data)
     check_params(request, ['category', 'players'])
 
     players = Player.objects.filter(pk__in=request.data.get('players'))
@@ -61,10 +62,10 @@ def game(request):
 
 @api_view(['POST'])
 def player(request):
-    check_params(request, ('first_name', 'last_name', 'sex'))
+    check_params(request, ('first_name', 'sex'))
+
     player = Player(
         first_name=request.data.get('first_name'),
-        last_name=request.data.get('last_name'),
         sex=request.data.get('sex'),
     )
     player.save()

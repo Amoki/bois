@@ -15,38 +15,16 @@
             <thead><tr>
                 <th>Joueurs</th><th></th>
             </tr></thead>
-            <tbody data-bind="foreach: selectedPlayers">
+            <tbody data-bind="foreach: players">
                 <tr>
-                    <td><input type="text" data-bind="autoComplete: { selected: $root.selectedPlayerOption, options: $root.playerOptions }" /></td>
-                    <td><a href="#" data-bind="click: $root.removePlayer" class="glyphicon glyphicon-remove"></a></td>
+                    <td><input type="text" data-bind="value: first_name" /></td>
                     <td><a href="#" data-bind="click: $root.addPlayer" class="glyphicon glyphicon-plus"></a></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div data-bind="visible: playerCreation() == true">
-        <table>
-            <thead><tr>
-                <th>Prénom</th><th>Nom</th><th>Sexe</th>
-            </tr></thead>
-            <tbody>
-                <tr>
-                    <td><input data-bind="value: playerCreationFisrtName" /></td>
-                    <td><input data-bind="value: playerCreationLastName" /></td>
-                    <td><select data-bind="options: availableSex, value: playerCreationSex, optionsText: 'printName'"></select></td>
-                    <td><a href="#" data-bind="click: commitPlayer" class="glyphicon glyphicon-ok"></a></td>
-                    <td><a href="#" data-bind="click: cancelPlayerCreation" class="glyphicon glyphicon-remove"></a></td>
-
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <button data-bind="click: createPlayer">Créer un joueur</button>
-
-
-    <a href="game.html" data-bind="click: createGame">C'est partie !</a>
+    <a href="game.html" data-bind="click: createGame">I WANNA GET DRUNK !</a>
 
 </div>
 {% endblock content %}

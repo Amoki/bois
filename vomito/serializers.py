@@ -12,7 +12,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ('pk', 'first_name', 'last_name', 'sex')
+        fields = ('pk', 'first_name', 'sex')
 
 
 class TurnSerializer(serializers.ModelSerializer):

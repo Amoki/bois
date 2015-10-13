@@ -61,7 +61,7 @@ class Game(models.Model, ContextModel):
 
         weighted_rules = []
         for rule in rules:
-            for x in xrange(rule.category.weighting):
+            for x in range(rule.category.weighting):
                 weighted_rules.append(rule)
 
         return random.choice(weighted_rules)
@@ -97,14 +97,10 @@ class Player(models.Model):
     )
 
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
     sex = models.CharField(choices=SEX_CHOICES, max_length=1, default=MALE)
 
-    class Meta:
-        unique_together = (("first_name", "last_name"),)
-
     def __str__(self):
-        return "%s %s" % (self.first_name, self.last_name)
+        return self.first_name
 
 
 class Turn(models.Model):

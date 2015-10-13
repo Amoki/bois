@@ -53,7 +53,7 @@ def execute(code, param=None, context=None, filename='<string>'):
 	if code is not None:
 		try:
 			exec(compile(code, filename, 'exec'))
-		except StopScript, ss:
+		except StopScript as ss:
 			if ss.message != "":
 				status = ss.message
 			pass
