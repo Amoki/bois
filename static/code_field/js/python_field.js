@@ -24,7 +24,7 @@ $(document).ready(function(){
 
 	$('.add-row a, a.collapse-toggle').click(function(){
 		setTimeout(convert, 50);
-	})
+	});
 
-	convert()
+	convert();
 });

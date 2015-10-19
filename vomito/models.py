@@ -12,8 +12,8 @@ class Rule(ScriptedModel):
     mixte = models.BooleanField(default=False)
     nb_players = models.PositiveIntegerField()
     # TODO check min can't be bigger than max
-    min_sip = models.PositiveIntegerField()
-    max_sip = models.PositiveIntegerField()
+    min_sip = models.PositiveIntegerField(null=True, blank=True)
+    max_sip = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.description
@@ -21,7 +21,12 @@ class Rule(ScriptedModel):
     """
     Créer les objets Drink, set la valeur String au turn,
     """
-    on_proc = ScriptField(blank=True, null=True, help_text="Called just after the turn is created. `rule` is the pending rule, available without any context (you can't call `set_value`). `game` is the pending game. `turn` is the current turn. `players` is the list of players. `involved_players` is the list of players of this turn.")
+    on_proc = ScriptField(blank=True, null=True, help_text="Called just after the turn is created. `rule` is the pending rule. `game` is the pending game. `turn` is the current turn. `players` is the list of players. `involved_players` is the list of players of this turn. `nb_sip` is the number of sips randomized for this turn.")
+
+    def get_nb_sip(self):
+        if not self.min_sip or not self.max_sip:
+            return 0
+        return random.randint(self.min_sip, self.max_sip)
 
 
 class Category(models.Model):

@@ -136,6 +136,7 @@ class ScriptedModel(models.Model):
             'turn': game.turn_set.get(number=game.turn_number),
             'players': game.players,
             'involved_players': list(involved_players.all()),
+            'nb_sip': self.get_nb_sip(),
             'rule': self
         }
 
