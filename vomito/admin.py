@@ -8,7 +8,7 @@ class PlayerInline(admin.TabularInline):
 
 
 class RuleAdmin(admin.ModelAdmin):
-    list_display = ('description', 'category', 'mixte', 'nb_players', 'on_proc')
+    list_display = ('description', 'randomizable', 'category', 'mixte', 'nb_players', 'on_proc')
 
 
 class CategoryAdmin(admin.ModelAdmin):

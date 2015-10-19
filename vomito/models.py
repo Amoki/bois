@@ -14,6 +14,8 @@ class Rule(ScriptedModel):
     # TODO check min can't be bigger than max
     min_sip = models.PositiveIntegerField(null=True, blank=True)
     max_sip = models.PositiveIntegerField(null=True, blank=True)
+    next = models.ForeignKey('Rule', null=True, blank=True)
+    randomizable = models.BooleanField(default=True)
 
     def __str__(self):
         return self.description
@@ -39,6 +41,11 @@ class Category(models.Model):
 
 
 class Game(models.Model, ContextModel):
+
+    context_app = 'game'
+    context_holder = '_GameVariable'
+    context_model = 'game'
+
     category = models.ForeignKey('Category')
     players = models.ManyToManyField('Player')
     mixte = models.BooleanField(default=True)
@@ -48,17 +55,14 @@ class Game(models.Model, ContextModel):
         return "Game %s" % (self.category)
 
     def select_rule(self):
-        if self.mixte:
-            rules = Rule.objects.filter(
-                nb_players__lte=self.players.count(),
-                category__difficulty__lte=self.category.difficulty
-            )
-        else:
-            rules = Rule.objects.filter(
-                nb_players__lte=self.players.count(),
-                category__difficulty__lte=self.category.difficulty,
-                mixte=False
-            )
+        rules = Rule.objects.exclude(
+            randomizable=False
+        ).filter(
+            nb_players__lte=self.players.count(),
+            category__difficulty__lte=self.category.difficulty
+        )
+        if not self.mixte:
+            rules = rules.filter(mixte=False)
 
         weighted_rules = []
         for rule in rules:
