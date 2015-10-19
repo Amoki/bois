@@ -37,20 +37,11 @@ function CreateGameViewModel() {
 
   self.addPlayer();
 
-  var clearSelectedPlayers = function(selectedPlayers) {
-    return selectedPlayers.filter(function(player) {
-      if(!player.pk) {
-        return false;
-      }
-      return true;
-    }).map(function(player) {
-      return player.pk;
+  var clearSelectedPlayers = function(players, cb) {
+    var cleanPlayers = players.filter(function(player) {
+      return (player.first_name() !== "");
     });
-  };
-
-  self.createGame = function() {
-    var i=0;
-    async.eachLimit(self.players(), 5, function(player, cb){
+    async.map(cleanPlayers, function(player, cb) {
       $.ajax("/player/", {
         data: ko.toJSON({
           first_name : player.first_name,
@@ -58,22 +49,29 @@ function CreateGameViewModel() {
         }),
         type: "post", contentType: "application/json",
         success: function(data) {
-          self.players()[i].pk(data.pk);
-          i += 1;
-          cb();
+          cb(null, data.pk);
         },
         error: function(err) {
           cb(err);
         }
       });
-    }, function(err) {
+    }, function(err, results) {
+      if(err) {
+        return cb(err);
+      }
+      cb(null, results);
+    });
+  };
+
+  self.createGame = function() {
+    clearSelectedPlayers(self.players(), function(err, players) {
       if(err) {
         return console.log(err.responseText);
       }
       $.ajax("/post-game/", {
         data: ko.toJSON({
           category : self.selectedCategory().pk,
-          players: clearSelectedPlayers(self.players())
+          players: players
         }),
         type: "post", contentType: "application/json",
         success: function(data) {

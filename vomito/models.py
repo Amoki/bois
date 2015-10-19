@@ -8,11 +8,10 @@ from bois.lib.models import ScriptedModel, ContextModel
 
 class Rule(ScriptedModel):
     description = models.CharField(max_length=512)
-    next = models.ForeignKey('Next', null=True, blank=True)
     category = models.ForeignKey('Category')
     mixte = models.BooleanField(default=False)
     nb_players = models.PositiveIntegerField()
-    # DOTO check min can't be bigger than max
+    # TODO check min can't be bigger than max
     min_sip = models.PositiveIntegerField()
     max_sip = models.PositiveIntegerField()
 
@@ -23,10 +22,6 @@ class Rule(ScriptedModel):
     Créer les objets Drink, set la valeur String au turn,
     """
     on_proc = ScriptField(blank=True, null=True, help_text="Called just after the turn is created. `rule` is the pending rule, available without any context (you can't call `set_value`). `game` is the pending game. `turn` is the current turn. `players` is the list of players. `involved_players` is the list of players of this turn.")
-
-
-class Next(models.Model):
-    rules = models.ManyToManyField('Rule', related_name="+")
 
 
 class Category(models.Model):
@@ -42,6 +37,7 @@ class Game(models.Model, ContextModel):
     category = models.ForeignKey('Category')
     players = models.ManyToManyField('Player')
     mixte = models.BooleanField(default=True)
+    turn_number = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return "Game %s" % (self.category)
@@ -70,13 +66,20 @@ class Game(models.Model, ContextModel):
         return self.players.all().order_by('?')[:rule.nb_players]
 
     def next_turn(self):
-        rule = self.select_rule()
-        involved_players = list(self.select_players(rule))
+        self.turn_number += 1
+        self.save()
+        try:
+            # If a forced turn has been created, get it
+            turn = self.turn_set.get(number=self.turn_number)
+        except Turn.DoesNotExist:
+            rule = self.select_rule()
+            involved_players = self.select_players(rule)
 
-        turn = Turn(rule=rule, game=self)
-        turn.save()
+            turn = Turn(rule=rule, game=self, number=self.turn_number)
+            turn.save()
+            turn.players.add(*list(involved_players))
 
-        rule.execute(self, involved_players)
+        turn.execute()
 
         # Select a Rule
         # Select players according to rule number
@@ -110,6 +113,11 @@ class Turn(models.Model):
     rule = models.ForeignKey('Rule')
     game = models.ForeignKey('Game')
     string = models.TextField()
+    number = models.PositiveIntegerField()
+    players = models.ManyToManyField('Player')
+
+    def execute(self):
+        self.rule.execute(self.game, self.players)
 
     def end(self, string):
         self.string = string

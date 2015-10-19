@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from vomito.models import Rule, Next, Category, Player, Drink, Turn, Game
+from vomito.models import Rule, Category, Player, Drink, Turn, Game
 
 
 class PlayerInline(admin.TabularInline):
     model = Game.players.through
 
 
-class RuleInline(admin.TabularInline):
-    model = Next.rules.through
-
-
 class RuleAdmin(admin.ModelAdmin):
-    list_display = ('description', 'next', 'category', 'mixte', 'nb_players', 'on_proc')
-
-
-class NextAdmin(admin.ModelAdmin):
-    inlines = (RuleInline,)
-    exclude = ('rules',)
+    list_display = ('description', 'category', 'mixte', 'nb_players', 'on_proc')
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -53,5 +44,4 @@ admin.site.register(Drink, DrinkAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(Rule, RuleAdmin)
-admin.site.register(Next, NextAdmin)
 admin.site.register(Category, CategoryAdmin)
