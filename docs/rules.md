@@ -3,7 +3,7 @@ Documentation pour le scripting
 
 C'est quoi une Rule ?
 ---------------
-Une rule (ou règle) est le patron (template) d'un tour. Il permet de générer une phrase qui sera afficher aux joueurs.
+Une rule (ou règle) est le patron (template) d'un tour. Elle permet de générer une phrase qui sera afficher aux joueurs.
 
 Elle est composée de :
 * min_sip `Entier: Le nombre minimum de gorgée que cette règle distribuera`
