@@ -48,14 +48,15 @@ nombre_gorgees = nb_sip
 
 ```python
 joueurs_impliques = involved_players
-joueur1 = joueurs_impliques.pop()
-joueur2 = joueurs_impliques.pop()
+
+joueur1 = joueurs_impliques[0]
+joueur2 = joueurs_impliques[1]
 ```
 
 #### Faire boire un joueur
 
 ```python
-joueur1 = involved_players.pop()
+joueur1 = involved_players[0]
 # Le joueur bois le nombre de gorgées généré par la règle 
 game.has_drink(joueur1, sip=nb_sip)
 
@@ -82,8 +83,8 @@ Réalisons une règle où le joueur A fait boire 3 à 4 gorgées au joueur B, pu
 
 ```python
 # On récup nos deux joueurs à partir de la liste des joueurs impliqués
-donneur = involved_players.pop()
-buveur = involved_players.pop()
+donneur = involved_players[0]
+buveur = involved_players[1]
 #On enregistre le faite qu'un joueur ai bu
 game.has_drink(buveur, nb_sip=nb_sip)
 
@@ -106,8 +107,8 @@ turn.execute("%s fait boire %s gorgées à %s" % (donneur, nb_sip, buveur))
 
 ```python
 # On récup nos deux joueurs à partir de la liste des joueurs impliqués
-ex_donneur = involved_players.pop()
-ex_buveur = involved_players.pop()
+ex_donneur = involved_players[0]
+ex_buveur = involved_players[1]
 
 #On enregistre le faite qu'un joueur ai bu
 game.has_drink(ex_donneur, nb_sip=nb_sip)
@@ -122,3 +123,9 @@ turn.execute("%s se venge et fait boire %s gorgées à %s" % (ex_buveur, nb_sip,
     * nb_players = 0 `Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère"`
     * next = None `Il n'y a pas de règle suivante`
     * randomizable = False `On ne veut pas voir cette règle apparaitre s'il n'y a pas eu la première`
+
+
+Pour aller plus loin 
+--------------------
+Ce tutorial est basique. Beaucoup d'autres opérations sont possibles. Il faut juste les faire soit même.
+Pour cela, référez-vous à la [documentation officielle de Python 3.4](https://docs.python.org/3.4/) et à [notre documentation interne](http://bois.amoki.fr/admin/doc/models/)
