@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from utils.json_renderer import JSONResponse
-from utils.required_params import check_params
+from utils.check_params import check_params
 
 from vomito.models import Game, Player, Category, Turn
 from vomito.serializers import PlayerSerializer, TurnSerializer, CategorySerializer
@@ -18,12 +17,12 @@ def home(request):
 
 @api_view(['GET'])
 def players(request):
-    return JSONResponse(PlayerSerializer(Player.objects.all(), many=True).data)
+    return Response(PlayerSerializer(Player.objects.all(), many=True).data)
 
 
 @api_view(['GET'])
 def categories(request):
-    return JSONResponse(CategorySerializer(Category.objects.all(), many=True).data)
+    return Response(CategorySerializer(Category.objects.all(), many=True).data)
 
 
 @api_view(['POST'])
@@ -68,7 +67,7 @@ def player(request):
         sex=request.data.get('sex'),
     )
     player.save()
-    return JSONResponse(PlayerSerializer(player).data)
+    return Response(PlayerSerializer(player).data)
 
 
 @api_view(['GET'])
@@ -79,7 +78,7 @@ def last_turn(request):
     game = Game.objects.get(pk=request.session['game'])
 
     turn = Turn.objects.get(game=game, number=game.turn_number)
-    return JSONResponse(TurnSerializer(turn).data)
+    return Response(TurnSerializer(turn).data)
 
 
 @api_view(['POST'])
