@@ -48,7 +48,7 @@ class PythonCodeFormField(forms.CharField):
         if not value:
             return
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             try:
                 value = value.replace('\r', '')
                 compile(value, "<string>", 'exec')

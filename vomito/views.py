@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from utils.json_renderer import JSONResponse
 from utils.required_params import check_params
 
-from vomito.models import Game, Player, Category
+from vomito.models import Game, Player, Category, Turn
 from vomito.serializers import PlayerSerializer, TurnSerializer, CategorySerializer
 
 
@@ -61,10 +61,10 @@ def game(request):
 
 @api_view(['POST'])
 def player(request):
-    check_params(request, ('first_name', 'last_name', 'sex'))
+    check_params(request, ('first_name', 'sex'))
+
     player = Player(
         first_name=request.data.get('first_name'),
-        last_name=request.data.get('last_name'),
         sex=request.data.get('sex'),
     )
     player.save()
@@ -76,7 +76,9 @@ def last_turn(request):
     if not request.session.get('game', False):
         return redirect('home')
 
-    turn = Game.objects.get(pk=request.session['game']).turn_set.last()
+    game = Game.objects.get(pk=request.session['game'])
+
+    turn = Turn.objects.get(game=game, number=game.turn_number)
     return JSONResponse(TurnSerializer(turn).data)
 
 
