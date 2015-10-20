@@ -83,11 +83,11 @@ turn.execute("%s fait boire %s gorgées à %s" % (donneur, nb_sip, buveur))
 ```
 
 * `values` :
-min_sip = 3
-max_sip = 4
-nb_players = 2
-next = La règle définie ci-dessous
-randomizable = True # Cette règle peut tomber aléatoirement
+    * min_sip = 3
+    * max_sip = 4
+    * nb_players = 2
+    * next = La règle définie ci-dessous
+    * randomizable = True # Cette règle peut tomber aléatoirement
 
 #### La règle de vengeance
 * `script` :
@@ -105,8 +105,8 @@ turn.execute("%s se venge et fait boire %s gorgées à %s" % (ex_buveur, nb_sip,
 ```
 
 * `values` :
-min_sip = 3
-max_sip = 4
-nb_players = 0 # Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère" 
-next = None # Il n'y a pas de règle suivante
-randomizable = False # On ne veut pas avoir cette règle s'il n'y a pas eu la première
+    * min_sip = 3
+    * max_sip = 4
+    * nb_players = 0 # Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère" 
+    * next = None # Il n'y a pas de règle suivante
+    * randomizable = False # On ne veut pas avoir cette règle s'il n'y a pas eu la première
