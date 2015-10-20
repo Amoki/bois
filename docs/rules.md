@@ -1,5 +1,17 @@
-Documentation pour le scripting par Event
+Documentation pour le scripting
 =======================
+
+C'est quoi une Rule ?
+---------------
+Une rule (ou règle) est le patron (template) d'un tour. Il permet de générer une phrase qui sera afficher aux joueurs.
+
+Il est composé de :
+* min_sip `Entier: Le nombre minimum de gorgée que cette règle distribuera`
+* max_sip `Entier: Le nombre maximum de gorgée que cette règle distribuera`
+* nb_players `Entier: Le nombre de joueurs impliqués dans cette règle`
+* description `String: Une description de la règle, utile uniquement pour nous y retrouver en tant de developpeurs`
+* randomizable `Booléen: Cette règle peut-elle tomber par hasard au cours d'une partie ou doit-elle être invoquée par une autre règle (voir l'exemple)`
+* script `Le script qui sera executé à chaque fois que la règle utilisée`
 
 Comment scripter ?
 ---------------
@@ -87,7 +99,7 @@ turn.execute("%s fait boire %s gorgées à %s" % (donneur, nb_sip, buveur))
     * max_sip = 4
     * nb_players = 2
     * next = La règle définie ci-dessous
-    * randomizable = True # Cette règle peut tomber aléatoirement
+    * randomizable = True `Cette règle peut tomber aléatoirement`
 
 #### La règle de vengeance
 * `script` :
@@ -107,6 +119,6 @@ turn.execute("%s se venge et fait boire %s gorgées à %s" % (ex_buveur, nb_sip,
 * `values` :
     * min_sip = 3
     * max_sip = 4
-    * nb_players = 0 # Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère" 
-    * next = None # Il n'y a pas de règle suivante
-    * randomizable = False # On ne veut pas avoir cette règle s'il n'y a pas eu la première
+    * nb_players = 0 `Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère"`
+    * next = None `Il n'y a pas de règle suivante`
+    * randomizable = False `On ne veut pas voir cette règle apparaitre s'il n'y a pas eu la première`
