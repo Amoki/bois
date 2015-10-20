@@ -3,11 +3,11 @@ Documentation pour le scripting
 
 C'est quoi une Rule ?
 ---------------
-Une rule (ou règle) est le patron (template) d'un tour. Elle permet de générer une phrase qui sera afficher aux joueurs.
+Une rule (ou règle) est le patron (template) d'un tour. Il permet de générer une phrase qui sera affichée aux joueurs.
 
-Elle est composée de :
-* min_sip `Entier: Le nombre minimum de gorgée que cette règle distribuera`
-* max_sip `Entier: Le nombre maximum de gorgée que cette règle distribuera`
+Il est composé de :
+* min_sip `Entier: Le nombre minimum de gorgées que cette règle distribuera`
+* max_sip `Entier: Le nombre maximum de gorgées que cette règle distribuera`
 * nb_players `Entier: Le nombre de joueurs impliqués dans cette règle`
 * description `String: Une description de la règle, utile uniquement pour nous y retrouver en tant de developpeurs`
 * randomizable `Booléen: Cette règle peut-elle tomber par hasard au cours d'une partie ou doit-elle être invoquée par une autre règle (voir l'exemple)`
@@ -70,7 +70,7 @@ turn.future(min_turn=3, max_turn=6, rule=rule.next, players=[])
 `min_turn` est le nombre de tours minimum avant que cette règle apparaisse
 `max_turn` est le nombre maximum de tours avant que cette règle apparaisse
 `rule` est la règle qui doit intervenir
-`players` est la lsite des joueurs impliqués dans la règle à venir
+`players` est la liste des joueurs impliqués dans la règle à venir
 
 Exemples
 -------------
