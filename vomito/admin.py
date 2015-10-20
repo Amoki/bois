@@ -16,7 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class GameAdmin(admin.ModelAdmin):
-    list_display = ('category',)
+    list_display = ('category', 'current_turn')
     exclude = ('players',)
     inlines = (PlayerInline,)
 
@@ -37,7 +37,7 @@ class TurnAdmin(admin.ModelAdmin):
 
 
 class DrinkAdmin(admin.ModelAdmin):
-    list_display = ('player', 'sip', 'bottoms_up')
+    list_display = ('player', 'sip', 'bottom_up')
 
 admin.site.register(Turn, TurnAdmin)
 admin.site.register(Drink, DrinkAdmin)

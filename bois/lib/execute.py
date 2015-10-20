@@ -7,9 +7,9 @@ from __future__ import division
 from datetime import datetime, timedelta
 from django.db.models import Q
 import random
-from bois.scripts.random_scripts import *
+from bois.scripts.random import *
 from vomito.models import *
-
+from vomito.scripts import *
 
 DEFAULT_STATUS = "ok"
 
