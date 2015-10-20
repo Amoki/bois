@@ -5,7 +5,7 @@ C'est quoi une Rule ?
 ---------------
 Une rule (ou règle) est le patron (template) d'un tour. Il permet de générer une phrase qui sera afficher aux joueurs.
 
-Il est composé de :
+Elle est composée de :
 * min_sip `Entier: Le nombre minimum de gorgée que cette règle distribuera`
 * max_sip `Entier: Le nombre maximum de gorgée que cette règle distribuera`
 * nb_players `Entier: Le nombre de joueurs impliqués dans cette règle`
