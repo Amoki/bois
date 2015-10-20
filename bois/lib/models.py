@@ -133,7 +133,7 @@ class ScriptedModel(models.Model):
         # Build context object
         context = {
             'game': game,
-            'turn': game.turn_set.get(number=game.turn_number),
+            'turn': game.current_turn,
             'players': game.players,
             'involved_players': list(involved_players.all()),
             'nb_sip': self.get_nb_sip(),

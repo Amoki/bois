@@ -77,8 +77,7 @@ def last_turn(request):
 
     game = Game.objects.get(pk=request.session['game'])
 
-    turn = Turn.objects.get(game=game, number=game.turn_number)
-    return Response(TurnSerializer(turn).data)
+    return Response(TurnSerializer(game.current_turn).data)
 
 
 @api_view(['POST'])

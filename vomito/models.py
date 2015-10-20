@@ -25,11 +25,6 @@ class Rule(ScriptedModel):
     """
     on_proc = ScriptField(blank=True, null=True, help_text="Called just after the turn is created. `rule` is the pending rule. `game` is the pending game. `turn` is the current turn. `players` is the list of players. `involved_players` is the list of players of this turn. `nb_sip` is the number of sips randomized for this turn.")
 
-    def get_nb_sip(self):
-        if not self.min_sip or not self.max_sip:
-            return 0
-        return random.randint(self.min_sip, self.max_sip)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -49,7 +44,7 @@ class Game(models.Model, ContextModel):
     category = models.ForeignKey('Category')
     players = models.ManyToManyField('Player')
     mixte = models.BooleanField(default=True)
-    turn_number = models.PositiveIntegerField(default=0)
+    current_turn = models.ForeignKey('Turn', null=True, related_name='current_turn')
 
     def __str__(self):
         return "Game %s" % (self.category)
@@ -75,27 +70,23 @@ class Game(models.Model, ContextModel):
         return self.players.all().order_by('?')[:rule.nb_players]
 
     def next_turn(self):
-        self.turn_number += 1
-        self.save()
+        # If first turn
+        next_turn_number = self.current_turn.number + 1 if self.current_turn else 1
         try:
             # If a forced turn has been created, get it
-            turn = self.turn_set.get(number=self.turn_number)
+            turn = self.turn_set.get(number=next_turn_number)
         except Turn.DoesNotExist:
             rule = self.select_rule()
             involved_players = self.select_players(rule)
 
-            turn = Turn(rule=rule, game=self, number=self.turn_number)
+            turn = Turn(rule=rule, game=self, number=next_turn_number)
             turn.save()
             turn.players.add(*list(involved_players))
 
-        turn.execute()
+        self.current_turn = turn
+        self.save()
 
-        # Select a Rule
-        # Select players according to rule number
-        # Create the turn
-        # execute the rule script
-        # Signal to update player stats
-        pass
+        turn.execute()
 
 
 class Player(models.Model):
@@ -114,9 +105,6 @@ class Player(models.Model):
     def __str__(self):
         return self.first_name
 
-    def drink(self, turn, sip=0, bottoms_up=None):
-        Drink(turn=turn, player=self, sip=sip, bottoms_up=bottoms_up).save()
-
 
 class Turn(models.Model):
     rule = models.ForeignKey('Rule')
@@ -125,16 +113,15 @@ class Turn(models.Model):
     number = models.PositiveIntegerField()
     players = models.ManyToManyField('Player')
 
+    class Meta():
+        unique_together = ("game", "number")
+
     def execute(self):
         self.rule.execute(self.game, self.players)
-
-    def end(self, string):
-        self.string = string
-        self.save()
 
 
 class Drink(models.Model):
     turn = models.ForeignKey('Turn')
     player = models.ForeignKey('Player')
     sip = models.PositiveIntegerField(null=True)
-    bottoms_up = models.NullBooleanField()
+    bottom_up = models.NullBooleanField()
