@@ -11,7 +11,6 @@ from vomito.serializers import PlayerSerializer, TurnSerializer, CategorySeriali
 @api_view(['GET'])
 def home(request):
     categories = Category.objects.all()
-
     return render(request, 'index.html', locals())
 
 

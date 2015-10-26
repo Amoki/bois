@@ -4,10 +4,17 @@
 <script type="text/javascript" src="{% static 'js/game.js' %}"></script>
 {% endblock pre_end_head %}
 {% block content %}
-<a href="" data-bind="click: nextTurn" class="full-screen">
-<div>
-    <h1 data-bind="text: rule"> </h1>
-</div>
-</a>
+    <section class="section">
+    <div class="row">
+    <a href="" data-bind="click: nextTurn" class="full-screen">
+        <div class="col-lg-12">
+            <h1>Let's play</h1>
+        </div>
+    <div class="col-lg-8 col-lg-offset-2">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Nouvelle regle MA GUEULE</div>
+        <div class="panel-body">
+        <p data-bind="text: rule"> </p>
+</div></div></div></a></div></section>
 {% endblock content %}
 

@@ -4,28 +4,30 @@
 <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 {% endblock pre_end_head %}
 {% block content %}
-<div class="row">
-    <p>
-        Categorie :
-        <select data-bind="options: availableCategories, optionsText: 'name', value: selectedCategory"></select>
-    </p>
 
-    <div>
-        <table>
-            <thead><tr>
-                <th>Joueurs</th><th></th>
-            </tr></thead>
-            <tbody data-bind="foreach: players">
-                <tr>
-                    <td><input type="text" data-bind="value: first_name" /></td>
-                    <td><a href="#" data-bind="click: $root.addPlayer" class="glyphicon glyphicon-plus"></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <header>
+    </header>
+    <section class="section" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+        <label for="cat">Categorie :</label>
+        <select class="form-control" data-bind="options: availableCategories, optionsText: 'name', value: selectedCategory" id="cat"></select></div>
 
-    <a href="game.html" data-bind="click: createGame">I WANNA GET DRUNK !</a>
+    <div class="col-lg-4 col-lg-offset-2"><div class="panel panel-default">
+        <div class="panel-heading">Joueurs
+        <a href="#" data-bind="click: $root.addPlayer" class="glyphicon glyphicon-plus"></a></div>
 
-</div>
+        <div class="panel-body" data-bind="foreach: players">
+            <div class="list-group">
+                <div class="form-group">
+            <input type="text" data-bind="value: first_name" class="list-group-item form-control"/>
+        </div></div></div></div></div>
+
+<div class="col-lg-12 text-center">
+    <a href="game.html" data-bind="click: createGame"><button type="button" class="btn btn-outline btn-default">I WANNA GET DRUNK !</button></a>
+</div>   </div>
+</div></section>
+
 {% endblock content %}
 
