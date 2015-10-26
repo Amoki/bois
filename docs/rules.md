@@ -1,5 +1,17 @@
-Documentation pour le scripting par Event
+Documentation pour le scripting
 =======================
+
+C'est quoi une Rule ?
+---------------
+Une rule (ou règle) est le patron (template) d'un tour. Il permet de générer une phrase qui sera affichée aux joueurs.
+
+Il est composé de :
+* min_sip `Entier: Le nombre minimum de gorgées que cette règle distribuera`
+* max_sip `Entier: Le nombre maximum de gorgées que cette règle distribuera`
+* nb_players `Entier: Le nombre de joueurs impliqués dans cette règle`
+* description `String: Une description de la règle, utile uniquement pour nous y retrouver en tant de developpeurs`
+* randomizable `Booléen: Cette règle peut-elle tomber par hasard au cours d'une partie ou doit-elle être invoquée par une autre règle (voir l'exemple)`
+* script `Le script qui sera executé à chaque fois que la règle utilisée`
 
 Comment scripter ?
 ---------------
@@ -36,14 +48,15 @@ nombre_gorgees = nb_sip
 
 ```python
 joueurs_impliques = involved_players
-joueur1 = joueurs_impliques.pop()
-joueur2 = joueurs_impliques.pop()
+
+joueur1 = joueurs_impliques[0]
+joueur2 = joueurs_impliques[1]
 ```
 
 #### Faire boire un joueur
 
 ```python
-joueur1 = involved_players.pop()
+joueur1 = involved_players[0]
 # Le joueur bois le nombre de gorgées généré par la règle 
 game.has_drink(joueur1, sip=nb_sip)
 
@@ -58,7 +71,7 @@ turn.future(min_turn=3, max_turn=6, rule=rule.next, players=[])
 `min_turn` est le nombre de tours minimum avant que cette règle apparaisse
 `max_turn` est le nombre maximum de tours avant que cette règle apparaisse
 `rule` est la règle qui doit intervenir
-`players` est la lsite des joueurs impliqués dans la règle à venir
+`players` est la liste des joueurs impliqués dans la règle à venir
 
 Exemples
 -------------
@@ -70,8 +83,8 @@ Réalisons une règle où le joueur A fait boire 3 à 4 gorgées au joueur B, pu
 
 ```python
 # On récup nos deux joueurs à partir de la liste des joueurs impliqués
-donneur = involved_players.pop()
-buveur = involved_players.pop()
+donneur = involved_players[0]
+buveur = involved_players[1]
 #On enregistre le faite qu'un joueur ai bu
 game.has_drink(buveur, nb_sip=nb_sip)
 
@@ -87,15 +100,15 @@ turn.execute("%s fait boire %s gorgées à %s" % (donneur, nb_sip, buveur))
     * max_sip = 4
     * nb_players = 2
     * next = La règle définie ci-dessous
-    * randomizable = True # Cette règle peut tomber aléatoirement
+    * randomizable = True `Cette règle peut tomber aléatoirement`
 
 #### La règle de vengeance
 * `script` :
 
 ```python
 # On récup nos deux joueurs à partir de la liste des joueurs impliqués
-ex_donneur = involved_players.pop()
-ex_buveur = involved_players.pop()
+ex_donneur = involved_players[0]
+ex_buveur = involved_players[1]
 
 #On enregistre le faite qu'un joueur ai bu
 game.has_drink(ex_donneur, nb_sip=nb_sip)
@@ -107,6 +120,12 @@ turn.execute("%s se venge et fait boire %s gorgées à %s" % (ex_buveur, nb_sip,
 * `values` :
     * min_sip = 3
     * max_sip = 4
-    * nb_players = 0 # Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère" 
-    * next = None # Il n'y a pas de règle suivante
-    * randomizable = False # On ne veut pas avoir cette règle s'il n'y a pas eu la première
+    * nb_players = 0 `Cette valeur n'a aucune importance, car les joueurs impliqués sont choisis par la règle "mère"`
+    * next = None `Il n'y a pas de règle suivante`
+    * randomizable = False `On ne veut pas voir cette règle apparaitre s'il n'y a pas eu la première`
+
+
+Pour aller plus loin 
+--------------------
+Ce tutorial est basique. Beaucoup d'autres opérations sont possibles. Il faut juste les faire soit même.
+Pour cela, référez-vous à la [documentation officielle de Python 3.4](https://docs.python.org/3.4/) et à [notre documentation interne](http://bois.amoki.fr/admin/doc/models/)
